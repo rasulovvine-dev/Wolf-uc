@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wolf UC Store - PUBG Mobile</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Telegram Web App SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+    </style>
+</head>
+<body class="bg-[#0b0e14] text-white min-h-screen font-sans antialiased pb-28">
+
+    <!-- TOP APP BAR -->
+    <div class="sticky top-0 z-40 bg-[#0b0e14]/80 backdrop-blur-md px-4 py-3 flex items-center justify-between border-b border-slate-900">
+        <h1 class="text-base font-black tracking-wider text-amber-400">🐺 WOLF UC STORE</h1>
+        <div class="flex items-center gap-2">
+            <span class="text-xs text-slate-400">ID: <span id="userIdDisplay">Telegram</span></span>
+        </div>
+    </div>
+
+    <!-- MAIN CONTAINER -->
+    <div class="max-w-md mx-auto p-4">
+
+        <!-- TAB 1: ASOSIY / UC PACKAGES -->
+        <div id="tab-asosiy" class="tab-content active">
+            <!-- Game Banner -->
+            <div class="relative rounded-2xl overflow-hidden mb-5 border border-slate-800 bg-slate-900 shadow-xl">
+                <div class="h-36 bg-gradient-to-r from-slate-900 to-amber-950 flex items-center justify-center relative">
+                    <div class="absolute inset-0 bg-black/40"></div>
+                    <div class="relative text-center p-4">
+                        <h2 class="text-2xl font-black text-white">PUBG Mobile</h2>
+                        <p class="text-xs text-amber-400 mt-1">⭐ Avtomatik UC yetkazib berish</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PUBG ID Input -->
+            <div class="bg-[#121620] border border-slate-800/80 rounded-2xl p-4 mb-5 shadow-lg">
+                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">PUBG ID raqamingiz</label>
+                <div class="relative">
+                    <input type="number" id="gameId" placeholder="Masalan: 5213754192" class="w-full bg-[#0b0e14] border border-slate-700/80 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-500 text-sm tracking-widest">
+                    <button onclick="checkPlayerId()" id="checkBtn" class="absolute right-2 top-2 bg-amber-500 hover:bg-amber-400 text-black font-bold px-4 py-1.5 rounded-lg text-xs transition">Tekshirish</button>
+                </div>
+                <div id="idResult" class="mt-3 text-xs hidden"></div>
+            </div>
+
+            <!-- Categories Switcher -->
+            <div class="flex gap-2 mb-4">
+                <button onclick="switchCategory('uc')" id="catBtnUc" class="flex-1 py-2 text-xs font-bold rounded-xl bg-amber-500 text-black transition">UC Paketlar</button>
+                <button onclick="switchCategory('packs')" id="catBtnPacks" class="flex-1 py-2 text-xs font-bold rounded-xl bg-[#121620] border border-slate-800 text-slate-400 transition">Maxsus Paketlar</button>
+            </div>
+
+            <!-- UC Packages Grid -->
+            <div id="ucPackagesGrid" class="grid grid-cols-2 gap-3 mb-6">
+                <div onclick="selectPackage(this, 60, 11700, '60 UC')" class="package-card bg-[#121620] border border-slate-800/80 rounded-2xl p-4 cursor-pointer hover:border-amber-500 transition">
+                    <div class="text-base font-black text-amber-400">60 UC</div>
+                    <div class="text-sm font-bold text-white mt-1">11,700 so'm</div>
+                </div>
+                <div onclick="selectPackage(this, 325, 59000, '325 UC')" class="package-card bg-[#121620] border border-slate-800/80 rounded-2xl p-4 cursor-pointer hover:border-amber-500 transition">
+                    <div class="text-base font-black text-amber-400">325 UC</div>
+                    <div class="text-sm font-bold text-white mt-1">59,000 so'm</div>
+                </div>
+                <div onclick="selectPackage(this, 660, 113000, '660 UC')" class="package-card bg-[#121620] border border-slate-800/80 rounded-2xl p-4 cursor-pointer hover:border-amber-500 transition">
+                    <div class="text-base font-black text-amber-400">660 UC</div>
+                    <div class="text-sm font-bold text-white mt-1">113,000 so'm</div>
+                </div>
+                <div onclick="selectPackage(this, 1800, 280000, '1800 UC')" class="package-card bg-[#121620] border border-slate-800/80 rounded-2xl p-4 cursor-pointer hover:border-amber-500 transition">
+                    <div class="text-base font-black text-amber-400">1800 UC</div>
+                    <div class="text-sm font-bold text-white mt-1">280,000 so'm</div>
+                </div>
+                <div onclick="selectPackage(this, 3850, 550000, '3850 UC')" class="package-card bg-[#121620] border border-slate-800/80 rounded-2xl p-4 cursor-pointer hover:border-amber-500 transition">
+                    <div class="text-base font-black text-amber-400">3850 UC</div>
+                    <div class="text-sm font-bold text-white mt-1">550,000 so'm</div>
+                </div>
+                <div onclick="selectPackage(this, 8100, 1100000, '8100 UC')" class="package-card bg-[#121620] border border-slate-800/80 rounded-2xl p-4 cursor-pointer hover:border-amber-500 transition">
+                    <div class="text-base font-black text-amber-400">8100 UC</div>
+                    <div class="text-sm font-bold text-white mt-1">1,100,000 so'm</div>
+                </div>
+                <div onclick="selectPackage(this, 16200, 2230000, '16200 UC')" class="package-card bg-[#121620] border border-slate-800/80 rounded-2xl p-4 cursor-pointer hover:border-amber-500 transition">
+                    <div class="text-base font-black text-amber-400">16200 UC</div>
+                    <div class="text-sm font-bold text-white mt-1">2,230,000 so'm</div>
+                </div>
+                <div onclick="selectPackage(this, 24300, 3200000, '24300 UC')" class="package-card bg-[#121620] border border-slate-800/80 rounded-2xl p-4 cursor-pointer hover:border-amber-500 transition">
+                    <div class="text-base font-black text-amber-400">24300 UC</div>
+                    <div class="text-sm font-bold text-white mt-1">3,200,000 so'm</div>
+                </div>
+            </div>
+
+            <!-- Special Packs Grid -->
+            <div id="specialPacksGrid" class="grid grid-cols-2 gap-3 mb-6 hidden">
+                <div onclick="selectPackage(this, 'Prime Plus 1 yillik', 1335245, 'Prime Plus 1 yillik')" class="package-card bg-[#121620] border border-slate-800/80 rounded-2xl p-4 cursor-pointer hover:border-amber-500 transition">
+                    <div class="text-xs font-black text-amber-400">Prime Plus 1 yillik</div>
+                    <div class="text-sm font-bold text-white mt-1">1,335,245 so'm</div>
+                </div>
+                <div onclick="selectPackage(this, 'Prime Plus 6 oylik', 663788, 'Prime Plus 6 oylik')" class="package-card bg-[#121620] border border-slate-800/80 rounded-2xl p-4 cursor-pointer hover:border-amber-500 transition">
+                    <div class="text-xs font-black text-amber-400">Prime Plus 6 oylik</div>
+                    <div class="text-sm font-bold text-white mt-1">663,788 so'm</div>
+                </div>
+                <div onclick="selectPackage(this, 'Prime Plus 3 oylik', 339461, 'Prime Plus 3 oylik')" class="package-card bg-[#121620] border border-slate-800/80 rounded-2xl p-4 cursor-pointer hover:border-amber-500 transition">
+                    <div class="text-xs font-black text-amber-400">Prime Plus 3 oylik</div>
+                    <div class="text-sm font-bold text-white mt-1">339,461 so'm</div>
+                </div>
+                <div onclick="selectPackage(this, 'Prime Plus 1 oylik', 116487, 'Prime Plus 1 oylik')" class="package-card bg-[#121620] border border-slate-800/80 rounded-2xl p-4 cursor-pointer hover:border-amber-500 transition">
+                    <div class="text-xs font-black text-amber-400">Prime Plus 1 oylik</div>
+                    <div class="text-sm font-bold text-white mt-1">116,487 so'm</div>
+                </div>
+                <div onclick="selectPackage(this, 'Prime 12 oylik', 136784, 'Prime 12 oylik')" class="package-card bg-[#121620] border border-slate-800/80 rounded-2xl p-4 cursor-pointer hover:border-amber-500 transition">
+                    <div class="text-xs font-black text-amber-400">Prime 12 oylik</div>
+                    <div class="text-sm font-bold text-white mt-1">136,784 so'm</div>
+                </div>
+                <div onclick="selectPackage(this, 'Prime 6 oylik', 69892, 'Prime 6 oylik')" class="package-card bg-[#121620] border border-slate-800/80 rounded-2xl p-4 cursor-pointer hover:border-amber-500 transition">
+                    <div class="text-xs font-black text-amber-400">Prime 6 oylik</div>
+                    <div class="text-sm font-bold text-white mt-1">69,892 so'm</div>
+                </div>
+                <div onclick="selectPackage(this, 'Prime 3 oylik', 36446, 'Prime 3 oylik')" class="package-card bg-[#121620] border border-slate-800/80 rounded-2xl p-4 cursor-pointer hover:border-amber-500 transition">
+                    <div class="text-xs font-black text-amber-400">Prime 3 oylik</div>
+                    <div class="text-sm font-bold text-white mt-1">36,446 so'm</div>
+                </div>
+                <div onclick="selectPackage(this, 'Prime 1 oylik', 14148, 'Prime 1 oylik')" class="package-card bg-[#121620] border border-slate-800/80 rounded-2xl p-4 cursor-pointer hover:border-amber-500 transition">
+                    <div class="text-xs font-black text-amber-400">Prime 1 oylik</div>
+                    <div class="text-sm font-bold text-white mt-1">14,148 so'm</div>
+                </div>
+                <div onclick="selectPackage(this, 'First Purchase Pack', 12148, 'First Purchase Pack')" class="package-card bg-[#121620] border border-slate-800/80 rounded-2xl p-4 cursor-pointer hover:border-amber-500 transition">
+                    <div class="text-xs font-black text-amber-400">First Purchase Pack</div>
+                    <div class="text-sm font-bold text-white mt-1">12,148 so'm</div>
+                </div>
+                <div onclick="selectPackage(this, 'Upgradeable Firearm Pack', 34395, 'Upgradeable Firearm Pack')" class="package-card bg-[#121620] border border-slate-800/80 rounded-2xl p-4 cursor-pointer hover:border-amber-500 transition">
+                    <div class="text-xs font-black text-amber-400">Upgradeable Firearm Pack</div>
+                    <div class="text-sm font-bold text-white mt-1">34,395 so'm</div>
+                </div>
+                <div onclick="selectPackage(this, 'Mythic Emblem Pack', 56604, 'Mythic Emblem Pack')" class="package-card bg-[#121620] border border-slate-800/80 rounded-2xl p-4 cursor-pointer hover:border-amber-500 transition">
+                    <div class="text-xs font-black text-amber-400">Mythic Emblem Pack</div>
+                    <div class="text-sm font-bold text-white mt-1">56,604 so'm</div>
+                </div>
+                <div onclick="selectPackage(this, 'Qizil kristal 1 dona', 34661, 'Qizil kristal 1 dona')" class="package-card bg-[#121620] border border-slate-800/80 rounded-2xl p-4 cursor-pointer hover:border-amber-500 transition">
+                    <div class="text-xs font-black text-amber-400">Qizil kristal 1 dona</div>
+                    <div class="text-sm font-bold text-white mt-1">34,661 so'm</div>
+                </div>
+            </div>
+
+            <!-- Order Button -->
+            <button onclick="buyProduct()" id="orderBtn" disabled class="w-full bg-slate-800 text-slate-500 font-bold py-4 rounded-2xl transition cursor-not-allowed">
+                Buyurtma berish
+            </button>
+        </div>
+
+        <!-- TAB 2: O'YINLAR -->
+        <div id="tab-oyinlar" class="tab-content">
+            <h2 class="text-lg font-bold mb-4">Barcha o'yinlar va paketlar</h2>
+            <div class="bg-[#121620] border border-slate-800 rounded-2xl p-4 mb-4 flex items-center justify-between">
+                <div>
+                    <h3 class="font-bold text-sm text-amber-400">PUBG Mobile (Auto)</h3>
+                    <p class="text-xs text-slate-400 mt-0.5">Tezkor avtomatik yetkazish</p>
+                </div>
+                <button onclick="switchTab('asosiy')" class="bg-amber-500 text-black font-bold px-4 py-2 rounded-xl text-xs">Tanlash</button>
+            </div>
+        </div>
+
+        <!-- TAB 3: TO'LDIRISH -->
+        <div id="tab-toidirish" class="tab-content">
+            <div class="bg-[#121620] border border-slate-800 rounded-2xl p-5 mb-5 shadow-lg">
+                <span class="text-xs text-slate-400 uppercase tracking-wider block mb-1">BALANS</span>
+                <div class="text-2xl font-black text-white"><span id="userBalance">0</span> so'm</div>
+            </div>
+
+            <h3 class="text-sm font-bold uppercase tracking-wider text-slate-400 mb-3">To'lov usuli</h3>
+            <div class="grid grid-cols-2 gap-3 mb-5">
+                <div onclick="selectPaymentMethod(this, 'Uzcard')" class="pay-method-card bg-[#121620] border border-slate-800 rounded-2xl p-4 cursor-pointer hover:border-amber-500 transition text-center">
+                    <div class="text-sm font-bold text-amber-400">UZCARD</div>
+                    <div class="text-[10px] text-slate-400 mt-1">Kartaga o'tkazma</div>
+                </div>
+                <div onclick="selectPaymentMethod(this, 'Humo')" class="pay-method-card bg-[#121620] border border-slate-800 rounded-2xl p-4 cursor-pointer hover:border-amber-500 transition text-center">
+                    <div class="text-sm font-bold text-amber-400">HUMO</div>
+                    <div class="text-[10px] text-slate-400 mt-1">Kartaga o'tkazma</div>
+                </div>
+            </div>
+
+            <div class="bg-[#121620] border border-slate-800 rounded-2xl p-4 mb-5">
+                <label class="block text-xs text-slate-400 mb-2">Summani kiriting (so'm)</label>
+                <input type="number" id="topupAmount" placeholder="Masalan: 50000" class="w-full bg-[#0b0e14] border border-slate-700 rounded-xl px-4 py-3 text-white text-sm mb-3">
+                <div class="grid grid-cols-4 gap-2 mb-3">
+                    <button onclick="setTopup(50000)" class="bg-slate-800 hover:bg-slate-700 py-1.5 rounded-lg text-xs">50k</button>
+                    <button onclick="setTopup(100000)" class="bg-slate-800 hover:bg-slate-700 py-1.5 rounded-lg text-xs">100k</button>
+                    <button onclick="setTopup(200000)" class="bg-slate-800 hover:bg-slate-700 py-1.5 rounded-lg text-xs">200k</button>
+                    <button onclick="setTopup(500000)" class="bg-slate-800 hover:bg-slate-700 py-1.5 rounded-lg text-xs">500k</button>
+                </div>
+                <button onclick="proceedTopup()" class="w-full bg-amber-500 hover:bg-amber-400 text-black font-bold py-3 rounded-xl text-sm transition">Balansni to'ldirish</button>
+            </div>
+        </div>
+
+        <!-- TAB 4: BUYURTMALAR -->
+        <div id="tab-buyurtmalar" class="tab-content">
+            <h2 class="text-lg font-bold mb-4">Buyurtmalar va Tranzaksiyalar</h2>
+            <div class="flex gap-2 mb-4 bg-[#121620] p-1 rounded-xl">
+                <button onclick="switchSubTab('orders')" id="subBtnOrders" class="flex-1 py-2 text-xs font-bold rounded-lg bg-amber-500 text-black transition">Buyurtmalar (0)</button>
+                <button onclick="switchSubTab('transactions')" id="subBtnTrans" class="flex-1 py-2 text-xs font-bold rounded-lg text-slate-400 transition">Tranzaksiyalar</button>
+            </div>
+            <div id="historyList" class="space-y-3">
+                <div class="text-center py-10 text-slate-500 text-xs">Hozircha buyurtmalar yo'q</div>
+            </div>
+        </div>
+
+        <!-- TAB 5: PROFIL -->
+        <div id="tab-profil" class="tab-content">
+            <div class="bg-[#121620] border border-slate-800 rounded-2xl p-5 mb-5 text-center shadow-lg">
+                <div class="w-16 h-16 bg-gradient-to-tr from-amber-500 to-indigo-600 rounded-full mx-auto flex items-center justify-center text-xl font-black mb-3 shadow-md">🐺</div>
+                <h3 id="profileName" class="font-bold text-base">Telegram foydalanuvchisi</h3>
+                <p class="text-xs text-slate-400 mt-0.5">ID: <span id="profileId">—</span></p>
+                <div class="mt-4 pt-4 border-t border-slate-800 flex justify-between items-center">
+                    <span class="text-xs text-slate-400">Balans:</span>
+                    <span class="font-black text-amber-400"><span id="profileBalance">0</span> so'm</span>
+                </div>
+            </div>
+
+            <div class="space-y-2">
+                <div onclick="switchTab('toidirish')" class="bg-[#121620] border border-slate-800 rounded-xl p-4 flex justify-between items-center cursor-pointer hover:border-amber-500 transition">
+                    <span class="text-xs font-semibold">💳 Balansni to'ldirish</span>
+                    <span class="text-xs text-amber-400">&rarr;</span>
+                </div>
+                <div onclick="switchTab('buyurtmalar')" class="bg-[#121620] border border-slate-800 rounded-xl p-4 flex justify-between items-center cursor-pointer hover:border-amber-500 transition">
+                    <span class="text-xs font-semibold">📋 Buyurtmalar tarixi</span>
+                    <span class="text-xs text-amber-400">&rarr;</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- INSUFFICIENT BALANCE MODAL -->
+    <div id="balanceModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-[#121620] border border-slate-800 rounded-3xl p-5 max-w-sm w-full text-center shadow-2xl">
+            <div class="w-12 h-12 bg-red-500/10 text-red-500 rounded-full mx-auto flex items-center justify-center text-xl mb-3 border border-red-500/20">🔒</div>
+            <h3 class="font-black text-base text-white mb-1">Balans yetarli emas</h3>
+            <p class="text-xs text-slate-400 mb-5">Bu mahsulotni olish uchun balansingiz yetarli emas. Avval balansni to'ldiring.</p>
+
+            <div class="bg-[#0b0e14] rounded-2xl p-3 mb-5 text-xs space-y-2 text-left">
+                <div class="flex justify-between"><span class="text-slate-400">Mahsulot narxi</span> <span id="modalPrice" class="font-bold">0 so'm</span></div>
+                <div class="flex justify-between"><span class="text-slate-400">Balans</span> <span id="modalBalance" class="font-bold">0 so'm</span></div>
+                <div class="flex justify-between border-t border-slate-800 pt-2"><span class="text-red-400">Yetishmaydi</span> <span id="modalMissing" class="font-bold text-red-400">0 so'm</span></div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+                <button onclick="closeModal()" class="bg-slate-800 hover:bg-slate-700 py-3 rounded-xl text-xs font-bold transition">Yopish</button>
+                <button onclick="goToTopup()" class="bg-amber-500 hover:bg-amber-400 text-black py-3 rounded-xl text-xs font-bold transition">+ To'ldirish</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAYMENT DETAILS MODAL -->
+    <div id="paymentModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-[#121620] border border-slate-800 rounded-3xl p-5 max-w-sm w-full shadow-2xl space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h3 class="font-bold text-sm text-amber-400">To'lovni amalga oshirish</h3>
+                <button onclick="closePaymentModal()" class="text-slate-400 hover:text-white text-xs">✕ Yopish</button>
+            </div>
+            <div class="text-xs space-y-2">
+                <div class="flex justify-between"><span class="text-slate-400">To'lov usuli:</span> <span id="payModalMethod" class="font-bold text-amber-400"></span></div>
+                <div class="flex justify-between"><span class="text-slate-400">Summa:</span> <span id="payModalAmount" class="font-bold text-white"></span></div>
+            </div>
+            <div class="bg-[#0b0e14] p-3 rounded-xl border border-slate-800 text-xs space-y-1">
+                <div class="text-slate-400">Karta raqami:</div>
+                <div id="payCard" class="font-mono font-bold text-sm text-amber-400 tracking-widest">5614 6822 0781 4403</div>
+                <div id="payCardOwner" class="text-[10px] text-slate-500">Qabul qiluvchi: Wolf UC Store</div>
+            </div>
+            <div class="text-[11px] text-amber-400 bg-amber-500/10 p-2.5 rounded-xl border border-amber-500/20">
+                ⚠️ Summani 1 so'mga ham o'zgartirmang va 5 daqiqada to'lang!
+            </div>
+            <div class="bg-[#0b0e14] p-3 rounded-xl border border-slate-800 text-xs space-y-2">
+                <label for="receiptFile" class="block text-slate-400">📎 To'lov chekining rasmi (screenshot):</label>
+                <input type="file" id="receiptFile" accept="image/*" class="block w-full text-[11px] text-slate-300 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-amber-500 file:text-black file:font-bold">
+            </div>
+            <button onclick="confirmPaymentAction()" id="payConfirmBtn" class="w-full bg-emerald-500 hover:bg-emerald-400 text-black font-bold py-3 rounded-xl text-xs transition">
+                To'lovni amalga oshirdim
+            </button>
+        </div>
+    </div>
+
+    <!-- ORDER PAYMENT MODAL (karta orqali to'lov + chek) -->
+    <div id="orderModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-start justify-center p-4 overflow-y-auto">
+        <div class="bg-[#121620] border border-slate-800 rounded-3xl p-5 max-w-sm w-full shadow-2xl space-y-4 my-4">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h3 class="font-bold text-sm text-amber-400">Buyurtma to'lovi</h3>
+                <button onclick="closeOrderModal()" class="text-slate-400 hover:text-white text-xs">✕ Yopish</button>
+            </div>
+            <div class="text-xs space-y-2">
+                <div class="flex justify-between"><span class="text-slate-400">Paket:</span> <span id="ordTitle" class="font-bold text-amber-400"></span></div>
+                <div class="flex justify-between"><span class="text-slate-400">PUBG ID:</span> <span id="ordGame" class="font-bold text-white"></span></div>
+                <div class="flex justify-between"><span class="text-slate-400">To'lov summasi:</span> <span id="ordPrice" class="font-bold text-white"></span></div>
+            </div>
+            <div class="bg-[#0b0e14] p-3 rounded-xl border border-slate-800 text-xs space-y-1">
+                <div class="text-slate-400">Karta raqami:</div>
+                <div id="ordCard" class="font-mono font-bold text-sm text-amber-400 tracking-widest"></div>
+                <div id="ordCardOwner" class="text-[10px] text-slate-500"></div>
+            </div>
+            <div class="text-[11px] text-amber-400 bg-amber-500/10 p-2.5 rounded-xl border border-amber-500/20">
+                ⚠️ Summani 1 so'mga ham o'zgartirmang va 5 daqiqada to'lang!
+            </div>
+            <button onclick="showOrderUpload()" id="ordPaidBtn" class="w-full bg-emerald-500 hover:bg-emerald-400 text-black font-bold py-3 rounded-xl text-xs transition">
+                💳 Karta to'lovni qildim
+            </button>
+            <div id="ordUpload" class="hidden space-y-3">
+                <div class="bg-[#0b0e14] p-3 rounded-xl border border-slate-800 text-xs space-y-2">
+                    <label for="ordFile" class="block text-slate-400">📎 To'lov chekining rasmini joylang:</label>
+                    <input type="file" id="ordFile" accept="image/*" onchange="onOrderFile(this)" class="block w-full text-[11px] text-slate-300 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-amber-500 file:text-black file:font-bold">
+                    <img id="ordPreview" alt="chek" class="hidden w-full max-h-72 object-contain rounded-xl">
+                </div>
+                <button onclick="sendOrderCard()" id="ordSendBtn" class="hidden w-full bg-amber-500 hover:bg-amber-400 text-black font-bold py-3 rounded-xl text-xs transition">
+                    📤 Yuborish
+                </button>
+            </div>
+            <button onclick="payFromBalance()" id="ordBalBtn" class="hidden w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 rounded-xl text-xs transition"></button>
+        </div>
+    </div>
+
+    <!-- BOTTOM NAVIGATION BAR -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-[#0b0e14]/90 backdrop-blur-lg border-t border-slate-800/80 px-2 py-2 z-40">
+        <div class="max-w-md mx-auto flex justify-between items-center text-center">
+            <button onclick="switchTab('asosiy')" id="nav-asosiy" class="nav-btn flex-1 flex flex-col items-center py-1 text-amber-400 transition">
+                <span class="text-lg">🏠</span>
+                <span class="text-[10px] mt-0.5">Asosiy</span>
+            </button>
+            <button onclick="switchTab('oyinlar')" id="nav-oyinlar" class="nav-btn flex-1 flex flex-col items-center py-1 text-slate-400 hover:text-white transition">
+                <span class="text-lg">🎮</span>
+                <span class="text-[10px] mt-0.5">O'yinlar</span>
+            </button>
+            <button onclick="switchTab('toidirish')" id="nav-toidirish" class="nav-btn flex-1 flex flex-col items-center py-1 text-slate-400 hover:text-white transition">
+                <span class="text-lg">💳</span>
+                <span class="text-[10px] mt-0.5">To'ldirish</span>
+            </button>
+            <button onclick="switchTab('buyurtmalar')" id="nav-buyurtmalar" class="nav-btn flex-1 flex flex-col items-center py-1 text-slate-400 hover:text-white transition">
+                <span class="text-lg">📋</span>
+                <span class="text-[10px] mt-0.5">Buyurtmalar</span>
+            </button>
+            <button onclick="switchTab('profil')" id="nav-profil" class="nav-btn flex-1 flex flex-col items-center py-1 text-slate-400 hover:text-white transition">
+                <span class="text-lg">👤</span>
+                <span class="text-[10px] mt-0.5">Profil</span>
+            </button>
+        </div>
+    </nav>
+
+    <script>
+        const tg = window.Telegram?.WebApp;
+        if (tg) {
+            tg.expand();
+            const u = tg.initDataUnsafe?.user;
+            if (u) {
+                document.getElementById('userIdDisplay').textContent = String(u.id);
+                document.getElementById('profileId').textContent = String(u.id);
+                document.getElementById('profileName').textContent =
+                    u.username ? '@' + u.username : [u.first_name, u.last_name].filter(Boolean).join(' ') || 'Telegram foydalanuvchisi';
+            }
+        }
+
+        let userBalance = 0;
+        let selectedUcAmount = null;
+        let selectedUcPrice = null;
+        let selectedPackageTitle = null;
+        let selectedPaymentMethodName = null;
+        let pendingTopupAmount = 0;
+        let isIdVerified = false;
+        let verifiedNickname = "";
+        let ordersHistory = [];
+        let transactionsHistory = [];
+        let currentSubTab = 'orders';
+
+        async function apiFetch(path, options = {}) {
+            const headers = { ...(options.headers || {}), 'X-Init-Data': (tg && tg.initData) || '' };
+            const res = await fetch(path, { ...options, headers });
+            let data = null;
+            try { data = await res.json(); } catch (e) {}
+            if (!res.ok) {
+                const err = new Error((data && data.error) || 'Server xatosi');
+                err.status = res.status;
+                err.data = data;
+                throw err;
+            }
+            return data;
+        }
+
+        async function loadMe() {
+            if (!tg || !tg.initData) return;
+            try {
+                const d = await apiFetch('/api/me');
+                userBalance = d.balance;
+                ordersHistory = d.orders;
+                transactionsHistory = d.topups;
+                updateBalances();
+                renderHistory();
+            } catch (e) {
+                console.warn(e);
+            }
+        }
+
+        function showLowBalance(price, balance) {
+            document.getElementById('modalPrice').innerText = price.toLocaleString() + " so'm";
+            document.getElementById('modalBalance').innerText = balance.toLocaleString() + " so'm";
+            document.getElementById('modalMissing').innerText = Math.max(price - balance, 0).toLocaleString() + " so'm";
+            document.getElementById('balanceModal').classList.remove('hidden');
+        }
+
+        function fmtDate(iso) {
+            try {
+                return new Date(iso).toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+            } catch (e) { return ''; }
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.getElementById('tab-' + tabId).classList.add('active');
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-amber-400');
+                btn.classList.add('text-slate-400');
+            });
+            const activeBtn = document.getElementById('nav-' + tabId);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-slate-400');
+                activeBtn.classList.add('text-amber-400');
+            }
+            window.scrollTo(0, 0);
+        }
+
+        function switchCategory(cat) {
+            const ucGrid = document.getElementById('ucPackagesGrid');
+            const packsGrid = document.getElementById('specialPacksGrid');
+            const btnUc = document.getElementById('catBtnUc');
+            const btnPacks = document.getElementById('catBtnPacks');
+            if (cat === 'uc') {
+                ucGrid.classList.remove('hidden');
+                packsGrid.classList.add('hidden');
+                btnUc.className = "flex-1 py-2 text-xs font-bold rounded-xl bg-amber-500 text-black transition";
+                btnPacks.className = "flex-1 py-2 text-xs font-bold rounded-xl bg-[#121620] border border-slate-800 text-slate-400 transition";
+            } else {
+                ucGrid.classList.add('hidden');
+                packsGrid.classList.remove('hidden');
+                btnPacks.className = "flex-1 py-2 text-xs font-bold rounded-xl bg-amber-500 text-black transition";
+                btnUc.className = "flex-1 py-2 text-xs font-bold rounded-xl bg-[#121620] border border-slate-800 text-slate-400 transition";
+            }
+        }
+
+        function selectPackage(element, uc, price, title) {
+            document.querySelectorAll('.package-card').forEach(card => card.classList.remove('border-amber-500', 'bg-amber-500/10'));
+            element.classList.add('border-amber-500', 'bg-amber-500/10');
+            selectedUcAmount = uc;
+            selectedUcPrice = price;
+            selectedPackageTitle = title;
+            updateOrderButtonState();
+        }
+
+        function selectPaymentMethod(element, method) {
+            document.querySelectorAll('.pay-method-card').forEach(card => card.classList.remove('border-amber-500', 'bg-amber-500/10'));
+            element.classList.add('border-amber-500', 'bg-amber-500/10');
+            selectedPaymentMethodName = method;
+        }
+
+        function switchSubTab(sub) {
+            currentSubTab = sub;
+            const btnOrders = document.getElementById('subBtnOrders');
+            const btnTrans = document.getElementById('subBtnTrans');
+            if (sub === 'orders') {
+                btnOrders.className = "flex-1 py-2 text-xs font-bold rounded-lg bg-amber-500 text-black transition";
+                btnTrans.className = "flex-1 py-2 text-xs font-bold rounded-lg text-slate-400 transition";
+            } else {
+                btnTrans.className = "flex-1 py-2 text-xs font-bold rounded-lg bg-amber-500 text-black transition";
+                btnOrders.className = "flex-1 py-2 text-xs font-bold rounded-lg text-slate-400 transition";
+            }
+            renderHistory();
+        }
+
+        async function checkPlayerId() {
+            const gameId = document.getElementById('gameId').value.trim();
+            const resultDiv = document.getElementById('idResult');
+            const checkBtn = document.getElementById('checkBtn');
+            if (gameId.length < 5) {
+                resultDiv.className = "mt-3 text-xs text-red-400 block";
+                resultDiv.innerText = "❌ To'g'ri PUBG ID kiriting!";
+                return;
+            }
+            checkBtn.innerText = "...";
+            checkBtn.disabled = true;
+            resultDiv.className = "mt-3 text-xs text-slate-400 block";
+            resultDiv.innerText = "⏳ Tekshirilmoqda...";
+            try {
+                const response = await fetch('/api/check-player/' + encodeURIComponent(gameId));
+                if (!response.ok) throw new Error('Server xatosi');
+                const data = await response.json();
+                const nickname = data?.username || data?.nickname || data?.data?.username;
+                if (nickname) {
+                    verifiedNickname = nickname;
+                    isIdVerified = true;
+                    resultDiv.className = "mt-3 text-xs text-emerald-400 block font-semibold";
+                    resultDiv.textContent = `✅ Topildi: ${nickname}`;
+                } else {
+                    isIdVerified = false;
+                    resultDiv.className = "mt-3 text-xs text-red-400 block";
+                    resultDiv.innerText = "❌ Bunday ID raqamli o'yinchi topilmadi.";
+                }
+            } catch (err) {
+                isIdVerified = false;
+                resultDiv.className = "mt-3 text-xs text-red-400 block";
+                resultDiv.innerText = "⚠️ ID tekshirish xizmati hozircha ulanmagan.";
+            } finally {
+                checkBtn.innerText = "Tekshirish";
+                checkBtn.disabled = false;
+                updateOrderButtonState();
+            }
+        }
+
+        function updateOrderButtonState() {
+            const btn = document.getElementById('orderBtn');
+            if (isIdVerified && selectedUcAmount !== null) {
+                btn.disabled = false;
+                btn.className = "w-full bg-amber-500 hover:bg-amber-400 text-black font-bold py-4 rounded-2xl transition cursor-pointer shadow-lg shadow-amber-500/20";
+                btn.innerText = `${selectedPackageTitle} sotib olish (${selectedUcPrice.toLocaleString()} so'm)`;
+            } else {
+                btn.disabled = true;
+                btn.className = "w-full bg-slate-800 text-slate-500 font-bold py-4 rounded-2xl transition cursor-not-allowed";
+                btn.innerText = "Avval PUBG ID va paketni tanlang";
+            }
+        }
+
+        // ---- Karta orqali to'lov: paket tanlandi -> karta -> "to'lovni qildim" -> chek -> "Yuborish"
+        let CARD = { card: '5614 6822 0781 4403', owner: 'Wolf UC Store' };
+        let ordBlob = null;
+        let ordBusy = false;
+
+        async function loadConfig() {
+            try {
+                const r = await fetch('/api/config');
+                const d = await r.json();
+                if (d.card) CARD.card = d.card;
+                if (d.card_owner) CARD.owner = d.card_owner;
+            } catch (e) {}
+            document.getElementById('payCard').innerText = CARD.card;
+            document.getElementById('payCardOwner').innerText = 'Qabul qiluvchi: ' + CARD.owner;
+        }
+
+        function buyProduct() {
+            if (orderBusy || ordBusy || !isIdVerified || selectedUcAmount === null) return;
+            if (!tg || !tg.initData) {
+                alert("Buyurtma berish uchun Mini App Telegram ichida ochilishi kerak.");
+                return;
+            }
+            openOrderModal();
+        }
+
+        function openOrderModal() {
+            document.getElementById('ordTitle').innerText = selectedPackageTitle;
+            document.getElementById('ordGame').innerText = document.getElementById('gameId').value.trim();
+            document.getElementById('ordPrice').innerText = selectedUcPrice.toLocaleString() + " so'm";
+            document.getElementById('ordCard').innerText = CARD.card;
+            document.getElementById('ordCardOwner').innerText = 'Qabul qiluvchi: ' + CARD.owner;
+            ordBlob = null;
+            document.getElementById('ordFile').value = '';
+            document.getElementById('ordPreview').classList.add('hidden');
+            document.getElementById('ordSendBtn').classList.add('hidden');
+            document.getElementById('ordUpload').classList.add('hidden');
+            document.getElementById('ordPaidBtn').classList.remove('hidden');
+            const balBtn = document.getElementById('ordBalBtn');
+            if (userBalance >= selectedUcPrice) {
+                balBtn.innerText = `💰 Balansdan to'lash (balans: ${userBalance.toLocaleString()} so'm)`;
+                balBtn.classList.remove('hidden');
+            } else {
+                balBtn.classList.add('hidden');
+            }
+            document.getElementById('orderModal').classList.remove('hidden');
+        }
+
+        function closeOrderModal() {
+            document.getElementById('orderModal').classList.add('hidden');
+        }
+
+        function showOrderUpload() {
+            document.getElementById('ordUpload').classList.remove('hidden');
+            document.getElementById('ordPaidBtn').classList.add('hidden');
+        }
+
+        function shrinkImage(file) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                const url = URL.createObjectURL(file);
+                img.onload = () => {
+                    const k = Math.min(1, 1600 / Math.max(img.width, img.height));
+                    const c = document.createElement('canvas');
+                    c.width = Math.round(img.width * k);
+                    c.height = Math.round(img.height * k);
+                    c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+                    c.toBlob(b => (b ? resolve(b) : reject()), 'image/jpeg', 0.85);
+                    URL.revokeObjectURL(url);
+                };
+                img.onerror = () => reject();
+                img.src = url;
+            });
+        }
+
+        async function onOrderFile(input) {
+            const f = input.files && input.files[0];
+            if (!f) return;
+            if (!f.type.startsWith('image/')) {
+                alert("Faqat rasm yuklang.");
+                input.value = '';
+                return;
+            }
+            try { ordBlob = await shrinkImage(f); } catch (e) { ordBlob = f; }
+            const pv = document.getElementById('ordPreview');
+            pv.src = URL.createObjectURL(ordBlob);
+            pv.classList.remove('hidden');
+            document.getElementById('ordSendBtn').classList.remove('hidden');
+        }
+
+        async function sendOrderCard() {
+            if (ordBusy || !ordBlob) return;
+            if (!tg || !tg.initData) {
+                alert("Buyurtma berish uchun Mini App Telegram ichida ochilishi kerak.");
+                return;
+            }
+            const btn = document.getElementById('ordSendBtn');
+            ordBusy = true;
+            btn.disabled = true;
+            btn.innerText = '⏳ Yuborilmoqda...';
+            try {
+                const fd = new FormData();
+                fd.append('title', selectedPackageTitle);
+                fd.append('game_id', document.getElementById('gameId').value.trim());
+                fd.append('receipt', ordBlob, 'chek.jpg');
+                await apiFetch('/api/order-card', { method: 'POST', body: fd });
+                closeOrderModal();
+                alert("Chek yuborildi! Egasi tekshirgach, bot sizga xabar yozadi.");
+                await loadMe();
+                switchTab('buyurtmalar');
+                switchSubTab('orders');
+            } catch (e) {
+                alert(e.message);
+            } finally {
+                ordBusy = false;
+                btn.disabled = false;
+                btn.innerText = '📤 Yuborish';
+            }
+        }
+
+        let orderBusy = false;
+        async function payFromBalance() {
+            if (orderBusy || !isIdVerified || selectedUcAmount === null) return;
+            if (userBalance < selectedUcPrice) {
+                showLowBalance(selectedUcPrice, userBalance);
+                return;
+            }
+            const gameId = document.getElementById('gameId').value.trim();
+            const btn = document.getElementById('orderBtn');
+            orderBusy = true;
+            btn.disabled = true;
+            btn.innerText = '⏳ Yuborilmoqda...';
+            try {
+                const d = await apiFetch('/api/order', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ title: selectedPackageTitle, game_id: gameId, nickname: verifiedNickname })
+                });
+                userBalance = d.balance;
+                updateBalances();
+                closeOrderModal();
+                alert("Buyurtma qabul qilindi! Admin UC ni yuborgach xabar keladi.");
+                await loadMe();
+                switchTab('buyurtmalar');
+                switchSubTab('orders');
+            } catch (e) {
+                if (e.status === 402 && e.data) {
+                    userBalance = e.data.balance;
+                    updateBalances();
+                    showLowBalance(e.data.price, e.data.balance);
+                } else {
+                    alert(e.message);
+                }
+            } finally {
+                orderBusy = false;
+                updateOrderButtonState();
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('balanceModal').classList.add('hidden');
+        }
+
+        function goToTopup() {
+            closeModal();
+            switchTab('toidirish');
+        }
+
+        function setTopup(amount) {
+            document.getElementById('topupAmount').value = amount;
+        }
+
+        function proceedTopup() {
+            const amt = parseInt(document.getElementById('topupAmount').value, 10);
+            if (!selectedPaymentMethodName) {
+                alert("Iltimos, to'lov usulini tanlang (Uzcard yoki Humo)!");
+                return;
+            }
+            if (!Number.isFinite(amt) || amt < 1000) {
+                alert("Eng kam to'ldirish miqdori 1000 so'm!");
+                return;
+            }
+            pendingTopupAmount = amt;
+            document.getElementById('payModalMethod').innerText = selectedPaymentMethodName;
+            document.getElementById('payModalAmount').innerText = amt.toLocaleString() + " so'm";
+            document.getElementById('paymentModal').classList.remove('hidden');
+        }
+
+        function closePaymentModal() {
+            document.getElementById('paymentModal').classList.add('hidden');
+        }
+
+        let topupBusy = false;
+        async function confirmPaymentAction() {
+            if (topupBusy) return;
+            if (!tg || !tg.initData) {
+                alert("To'lov so'rovini yuborish uchun Mini App Telegram ichida ochilishi kerak.");
+                return;
+            }
+            if (!selectedPaymentMethodName || !Number.isFinite(pendingTopupAmount) || pendingTopupAmount < 1000) {
+                alert("To'lov ma'lumotlari noto'g'ri.");
+                return;
+            }
+            const file = document.getElementById('receiptFile').files[0];
+            if (!file) {
+                alert("Avval to'lov chekining rasmini (screenshot) yuklang.");
+                return;
+            }
+            if (!file.type.startsWith('image/')) {
+                alert("Faqat rasm yuklang.");
+                return;
+            }
+            if (file.size > 8 * 1024 * 1024) {
+                alert("Rasm hajmi 8 MB dan oshmasligi kerak.");
+                return;
+            }
+            const btn = document.getElementById('payConfirmBtn');
+            topupBusy = true;
+            btn.disabled = true;
+            btn.innerText = '⏳ Yuborilmoqda...';
+            try {
+                const fd = new FormData();
+                fd.append('method', selectedPaymentMethodName);
+                fd.append('amount', String(pendingTopupAmount));
+                fd.append('receipt', file);
+                await apiFetch('/api/topup', { method: 'POST', body: fd });
+                closePaymentModal();
+                document.getElementById('topupAmount').value = '';
+                document.getElementById('receiptFile').value = '';
+                alert("Chek adminga yuborildi. Admin tasdiqlagach balansingiz to'ldiriladi.");
+                await loadMe();
+                switchTab('buyurtmalar');
+                switchSubTab('transactions');
+            } catch (e) {
+                alert(e.message);
+            } finally {
+                topupBusy = false;
+                btn.disabled = false;
+                btn.innerText = "To'lovni amalga oshirdim";
+            }
+        }
+
+        function updateBalances() {
+            document.getElementById('userBalance').innerText = userBalance.toLocaleString();
+            document.getElementById('profileBalance').innerText = userBalance.toLocaleString();
+        }
+
+        function escapeHtml(value) {
+            return String(value ?? '').replace(/[&<>"']/g, ch => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            }[ch]));
+        }
+
+        const ORDER_STATUS = {
+            review:    ['⏳', 'Chek tekshirilmoqda', 'text-amber-500'],
+            approved:  ['✅', 'To\'lov tasdiqlandi, UC yaqinda tushadi', 'text-amber-400'],
+            done:      ['✅', 'UC tushdi', 'text-emerald-400'],
+            rejected:  ['❌', "To'lov rad etildi", 'text-red-400'],
+            cancelled: ['❌', "Bekor qilindi (pul qaytarildi)", 'text-red-400'],
+            error:     ['⚠️', 'Yuborilmadi', 'text-red-400'],
+            pending:   ['⏳', 'Admin yetkazmoqda', 'text-amber-500']
+        };
+        const TOPUP_STATUS = {
+            pending:  ['⏳', 'Admin tekshirmoqda', 'text-amber-500'],
+            approved: ['✅', 'Tasdiqlandi', 'text-emerald-400'],
+            rejected: ['❌', 'Rad etildi', 'text-red-400'],
+            error:    ['⚠️', 'Yuborilmadi', 'text-red-400']
+        };
+
+        function renderHistory() {
+            const list = document.getElementById('historyList');
+            document.getElementById('subBtnOrders').innerText = `Buyurtmalar (${ordersHistory.length})`;
+            if (currentSubTab === 'orders') {
+                if (ordersHistory.length === 0) {
+                    list.innerHTML = `<div class="text-center py-10 text-slate-500 text-xs">Hozircha buyurtmalar yo'q</div>`;
+                    return;
+                }
+                list.innerHTML = ordersHistory.map(item => {
+                    const st = ORDER_STATUS[item.status] || ['•', item.status, 'text-slate-400'];
+                    return `
+                    <div class="bg-[#121620] border border-slate-800 rounded-2xl p-4 text-xs space-y-1">
+                        <div class="flex justify-between font-bold"><span class="text-amber-400">${escapeHtml(item.title)}</span> <span>${Number(item.price).toLocaleString()} so'm</span></div>
+                        <div class="text-slate-400">PUBG ID: ${escapeHtml(item.game_id)}</div>
+                        <div class="text-[10px] ${st[2]}">${st[0]} ${escapeHtml(st[1])} (${fmtDate(item.created)})</div>
+                    </div>`;
+                }).join('');
+            } else {
+                if (transactionsHistory.length === 0) {
+                    list.innerHTML = `<div class="text-center py-10 text-slate-500 text-xs">Hozircha tranzaksiyalar yo'q</div>`;
+                    return;
+                }
+                list.innerHTML = transactionsHistory.map(item => {
+                    const st = TOPUP_STATUS[item.status] || ['•', item.status, 'text-slate-400'];
+                    const amtCls = item.status === 'approved' ? 'text-emerald-400' : 'text-slate-400';
+                    return `
+                    <div class="bg-[#121620] border border-slate-800 rounded-2xl p-4 text-xs space-y-1">
+                        <div class="flex justify-between font-bold"><span class="text-amber-400">Balans to'ldirish (${escapeHtml(item.method)})</span> <span class="${amtCls}">+${Number(item.amount).toLocaleString()} so'm</span></div>
+                        <div class="text-[10px] ${st[2]}">${st[0]} ${escapeHtml(st[1])} (${fmtDate(item.created)})</div>
+                    </div>`;
+                }).join('');
+            }
+        }
+
+        if (tg) { tg.ready(); }
+        loadConfig();
+        loadMe();
+        setInterval(loadMe, 15000);
+    </script>
+</body>
+</html>
